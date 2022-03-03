@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  midi_test:
+    build:
+      dockerfile: .docker/Dockerfile
+      context: .
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace
