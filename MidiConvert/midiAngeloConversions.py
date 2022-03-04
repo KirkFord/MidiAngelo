@@ -9,6 +9,7 @@ from midiutil import MIDIFile
 A0_NOTE = 21
 C8_NOTE = 108
 
+# helper functions for conversions
 
 def lerp(min, max, note):
   return int(min + note * (max - min))
@@ -74,12 +75,17 @@ def convert(img_file, midi_file, play):
       pygame.mixer.music.stop()
       raise SystemExit
 
+# End of Helper Functions, The last three are funtions you would wnat to call upon
 
-
-
-
-
-
+"""
+Converts a nested list of pixel RGB values into an image
+@:param outputFileName -> name of the image file that will be exported. it will be saved in the woring directoru 
+@:param P -> A NxM nested list of pixel values 
+    example: [[[r,g,b],[r,g,b]],[r,g,b],[r,g,b]] would represent a 2x2 image
+@param scale -> the magnification factor of the generated image. its main purpose
+    is for exporting images for the user to look at
+@param show -> false by default. displays the image after generation, not recomended outside of testing
+"""
 def canvas2image(outputFileName, P, scale, show=False):
     N = len(P)
     M = len(P[0])
@@ -91,7 +97,7 @@ def canvas2image(outputFileName, P, scale, show=False):
     for i in range(img.size[0]):  # for every pixel:
         for j in range(img.size[1]):
             newPix = P[j][i]
-            print(newPix)
+            #print(newPix)
             pixels[i, j] = (newPix[0], newPix[1], newPix[2])
 
     img = img.resize((img.size[0]*scale,img.size[1]*scale),Image.NEAREST)
@@ -102,12 +108,25 @@ def canvas2image(outputFileName, P, scale, show=False):
     img.save(outputFileName + "x"+(str)(scale)+".PNG")
     img.close()
 
+
+"""
+Converts a image into a midi file
+@:param inputFileName -> name/path of the image file to be converted
+@:param outputFileName -> the name of the midi file being generated. it will be saved in the working directory
+@:param playback -> false by default. Played the midi file after conversion. not recomended outside of testing
+"""
 def image2midi(inputFileName,outputFileName,playback=False):
     convert(inputFileName,outputFileName,playback)
 
+
+""" 
+Converts a nested list of pixel RGB values into a midi file
+@:param outputFileName -> the name of the midi file being generated. it will be saved in the working directory
+@:param P -> A NxM nested list of pixel values 
+    example: [[[r,g,b],[r,g,b]],[r,g,b],[r,g,b]] would represent a 2x2 image
+@param show -> false by default. displays the image after generation, not recomended outside of testing
+@:param playback -> false by default. Played the midi file after conversion. not recomended outside of testing
+"""
 def canvas2midi(outputFileName, P, show=False, playback=False):
     canvas2image(outputFileName+"-canvas2midiTEMP",P,1,show)
-    # print(outputFileName)
-    # print("yeet")
-
     convert(outputFileName+"-canvas2midiTEMPx1.PNG",outputFileName+".midi",playback)
