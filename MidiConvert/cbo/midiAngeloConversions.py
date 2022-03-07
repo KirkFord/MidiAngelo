@@ -1,8 +1,6 @@
-from PIL import Image
-
 from itertools import groupby
 
-import pygame, argparse
+import pygame
 from PIL import Image
 from midiutil import MIDIFile
 
@@ -75,6 +73,28 @@ def convert(img_file, midi_file, play):
       pygame.mixer.music.stop()
       raise SystemExit
 
+"""
+unpacks data string into an array/grid of pixel values, returns a NxM nested list
+"""
+def unpackDataString(str):
+    str = str.replace("\n","\\n")
+    str = str.split("\\n")
+    del str[-1]
+    result = []
+    for row in str:
+        row = row.replace("(","")
+        row = row.replace(")","")
+        row = row.split(" ")
+        newrow = []
+        for pixel in row:
+            pixel = pixel.split(",")
+            for i in range(0, len(pixel)):
+                pixel[i] = int(pixel[i])
+            newrow.append(pixel)
+        result.append(newrow)
+    return result
+
+
 # End of Helper Functions, The last three are funtions you would wnat to call upon
 
 """
@@ -86,7 +106,9 @@ Converts a nested list of pixel RGB values into an image
     is for exporting images for the user to look at
 @param show -> false by default. displays the image after generation, not recomended outside of testing
 """
-def canvas2image(outputFileName, P, scale, show=False):
+def canvas2image(outputFileName, dataString, scale, show=False):
+
+    P = unpackDataString(dataString)
     N = len(P)
     M = len(P[0])
 
@@ -96,11 +118,12 @@ def canvas2image(outputFileName, P, scale, show=False):
 
     for i in range(img.size[0]):  # for every pixel:
         for j in range(img.size[1]):
-            newPix = P[j][i]
-            #print(newPix)
+            newPix = P[i][j]
             pixels[i, j] = (newPix[0], newPix[1], newPix[2])
 
-    img = img.resize((img.size[0]*scale,img.size[1]*scale),Image.NEAREST)
+    intscale = (int)(scale)
+
+    img = img.resize((img.size[0]*intscale,img.size[1]*intscale),Image.NEAREST)
 
     if show == True:
         img.show()
