@@ -73,8 +73,11 @@ def convert(img_file, midi_file, play):
       pygame.mixer.music.stop()
       raise SystemExit
 
-
+"""
+unpacks data string into an array/grid of pixel values, returns a NxM nested list
+"""
 def unpackDataString(str):
+    str = str.replace("\n","\\n")
     str = str.split("\\n")
     del str[-1]
     result = []
