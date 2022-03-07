@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<title>.midiAngelo - Canvas</title>
+	</head>
+	<body>
+		<div>
+			<h2>Hello Music Creator</h2>
+		</div>
+		<div>
+			<form>
+				<label>Upload a pog pic</label>
+				<input id="canvas_image_upload" type="file"/>
+			</form>
+			<img id="uploaded_canvas_image"/>
+		</div>
+	</body>
+</html>
+<script>
+	document.getElementById("canvas_image_upload").addEventListener();
+	
+	/*
+	Create a ajax request to our django server to convert our image to a mp3
+	update UI with playable(/downloadable) mp3 for user
+	*/
+	function convertImage() {
+		convert_image_request = new XMLHttpRequest();
+
+		convert_image_request.onreadystatechange = updateMP3Player();
+
+		convert_image_request.open('POST', 'http://13.57.39.16:8000/convert_image')
+	}
+</script>
