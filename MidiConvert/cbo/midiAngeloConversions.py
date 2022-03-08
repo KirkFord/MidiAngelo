@@ -63,10 +63,6 @@ def convert(img_file, midi_file, play):
   pygame.init()
   data = get_song_data(img_file)
   song = create_midi(240, data)
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
   with open(midi_file, 'wb') as f:
     song.writeFile(f)
 
