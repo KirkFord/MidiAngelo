@@ -11,96 +11,127 @@
     <option value="blue">Blue</option>
 </select>
 <button id="convert">Convert</button>
+<div id="mediaParent">
+    <audio controls>
+        <source id="source" src="" type="audio/ogg">
+    </audio>
+</div>
 
 
 <script id="pageScript">
     window.addEventListener("load", () =>{
-    const canvas = document.querySelector('#mainCanvas');
-    const colorSelect = document.querySelector('#colors');
-    const convert = document.querySelector('#convert');
+        const canvas = document.querySelector('#mainCanvas');
+        const colorSelect = document.querySelector('#colors');
+        const convert = document.querySelector('#convert');
 
-    canvasPixels = [];
-    for (let i = 0; i < canvas.height; i++){
-        //populating the array
-        row = [];
-        for (let j = 0; j <canvas.width; j++){
-            pixel = [255,255,255];
-            row.push(pixel);
-        }
-        canvasPixels.push(row);
-    }
-    const canvasctx = canvas.getContext('2d');
-    let currentColor = '';
-    let painting = false;
-
-
-    
-    function hexToRgb(hex) {
-        //simple hex to rgb by Tim Down on stackoverflow
-        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16)
-        } : null;
-}
-    function startPosition(e){
-        painting = true;
-        draw(e);
-    }
-    function endPosition(){
-        painting = false;
-        canvasctx.beginPath();
-    }
-    function changeColor(){
-        currentColor = colorSelect.value;
-    }
-    function draw(e){
-        if(!painting) return;
-        let scale = 16;
-        let x = Math.round(e.clientX/scale)-1;
-        let y = Math.round(e.clientY/scale)-1;
-
-        canvasctx.fillStyle = currentColor;
-        colorRGB = hexToRgb(canvasctx.fillStyle);
-        canvasPixels[y][x] = [colorRGB.r, colorRGB.g, colorRGB.b];
-        canvasctx.rect(x,y, 1, 1);
-        canvasctx.fill();
-    }
-
-    function convertTXT(){
-        finalString = "";
-        finalString+= ""
-        for (let i = 0; i < canvasPixels.length; i++){
-            for (let j = 0; j < canvasPixels[0].length; j++){
-                currentPixel = canvasPixels[i][j];
-                finalString += "(" + currentPixel[0] + "," +currentPixel[1] + "," + currentPixel[2] + ") ";
-            } 
-            finalString += "\n";
-        }
-        console.log(finalString);
-
-        
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", '/imagedata/', true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function(){
-            if (this.readyState === XMLHttpRequest.DONE && this.status === 200){
-                console.log("String Recieved");
+        canvasPixels = [];
+        for (let i = 0; i < canvas.height; i++){
+            //populating the array
+            row = [];
+            for (let j = 0; j <canvas.width; j++){
+                pixel = [255,255,255];
+                row.push(pixel);
             }
+            canvasPixels.push(row);
         }
-        xhr.send(finalString);
+        const canvasctx = canvas.getContext('2d');
+        let currentColor = '';
+        let painting = false;
+
+
         
+        function hexToRgb(hex) {
+            //simple hex to rgb by Tim Down on stackoverflow
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+        function startPosition(e){
+            painting = true;
+            draw(e);
+        }
+        function endPosition(){
+            painting = false;
+            canvasctx.beginPath();
+        }
+        function changeColor(){
+            currentColor = colorSelect.value;
+        }
+        function draw(e){
+            if(!painting) return;
+            let scale = 16;
+            let x = Math.round(e.clientX/scale)-1;
+            let y = Math.round(e.clientY/scale)-1;
+
+            canvasctx.fillStyle = currentColor;
+            colorRGB = hexToRgb(canvasctx.fillStyle);
+            canvasPixels[y][x] = [colorRGB.r, colorRGB.g, colorRGB.b];
+            canvasctx.rect(x,y, 1, 1);
+            canvasctx.fill();
+        }
+
+        function convertTXT(){
+            finalString = "";
+            finalString+= ""
+            for (let i = 0; i < canvasPixels.length; i++){
+                for (let j = 0; j < canvasPixels[0].length; j++){
+                    currentPixel = canvasPixels[i][j];
+                    finalString += "(" + currentPixel[0] + "," +currentPixel[1] + "," + currentPixel[2] + ") ";
+                } 
+                finalString += "\n";
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", '/imagedata/', true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function(){
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200){
+                    data="data:audio/ogg;base64,"+String(xhr.response);
+                    var binary= convertDataURIToBinary(data);
+                    var blob=new Blob([binary], {type : 'audio/ogg'});
+                    var blobUrl = URL.createObjectURL(blob);
+
+                    document.getElementById("mediaParent").innerHTML='';
+                    var new_source = document.createElement("source");
+                    new_source.setAttribute('id', 'source');
+                    new_source.setAttribute('src', blobUrl);
+                    new_source.setAttribute('type', "audio/ogg");
+                    new_audio = document.createElement("audio");
+                    new_audio.setAttribute('controls', 'controls');
+                    new_audio.appendChild(new_source);
+                    document.getElementById("mediaParent").appendChild(new_audio);
+                }
+            }
+            xhr.send(finalString);
+            
+        }
+
+
+        convert.addEventListener("click", convertTXT);
+        colorSelect.addEventListener("change", changeColor);
+        canvas.addEventListener("mousedown", startPosition);
+        canvas.addEventListener("mouseup", endPosition);
+        canvas.addEventListener("mousemove", draw);
+
+    });
+
+    var BASE64_MARKER = ';base64,';
+
+    function convertDataURIToBinary(dataURI) {
+        var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+        var base64 = dataURI.substring(base64Index);
+        var raw = window.atob(base64);
+        var rawLength = raw.length;
+        var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+        for(i = 0; i < rawLength; i++) {
+            array[i] = raw.charCodeAt(i);
+        }
+        return array;
     }
-
-
-    convert.addEventListener("click", convertTXT);
-    colorSelect.addEventListener("change", changeColor);
-    canvas.addEventListener("mousedown", startPosition);
-    canvas.addEventListener("mouseup", endPosition);
-    canvas.addEventListener("mousemove", draw);
-
-});
 </script>
 <style>
 #mainCanvas{

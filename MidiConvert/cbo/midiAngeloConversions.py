@@ -1,4 +1,5 @@
 from itertools import groupby
+from unittest import skip
 
 import pygame
 from PIL import Image
@@ -87,11 +88,12 @@ def unpackDataString(str):
         row = row.replace("(","")
         row = row.replace(")","")
         row = row.split(" ")
+        del row[-1]
         newrow = []
         for pixel in row:
             pixel = pixel.split(",")
             for i in range(0, len(pixel)):
-                pixel[i] = int(pixel[i])
+              pixel[i] = int(pixel[i])
             newrow.append(pixel)
         result.append(newrow)
     return result

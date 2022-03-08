@@ -14,4 +14,4 @@ FluidSynth('soundfonts/' + str(soundfont_name)).midi_to_audio(midi_in_name, wav_
 
 
 def createWav(midi_in_name, soundfont_name, wav_output_name):
-	FluidSynth('soundfonts/' + str(soundfont_name)).midi_to_audio(midi_in_name, wav_output_name)
+	FluidSynth(str(soundfont_name)).midi_to_audio(midi_in_name, wav_output_name)
