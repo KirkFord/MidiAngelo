@@ -1,9 +1,17 @@
+import os
 from django.http import HttpResponse
 from django.http import JsonResponse
 
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
+<<<<<<< Updated upstream
+=======
+from . import midiAngeloConversions
+from . import midi_to_audio_conversion
+from django.conf import settings
+import base64
+>>>>>>> Stashed changes
 
 def home(request):
 	print("test home")
@@ -11,11 +19,24 @@ def home(request):
 
 @csrf_exempt
 def image(request):
+<<<<<<< Updated upstream
 	print(request.body)
 	midi_string = request.body.decode("utf-8")
 	print(midi_string)
 	return JsonResponse({'code': 200, 'payload': midi_string})
 
+=======
+	midi_string = request.body.decode("utf-8") #request.body.image_string
+	sound = "Harp" #request.body.sound
+	sound_path = "cbo/soundfonts/"+sound+".sf2"
+	midi_file = midiAngeloConversions.canvas2midi('output_midi', midi_string)
+	audio_file = midi_to_audio_conversion.createWav("output_midi.midi", settings.BASE_DIR/sound_path, 'output_audio.flac')
+	fname = settings.BASE_DIR/"output_audio.flac"
+	with open(fname,"rb") as f: audio_encoded = base64.b64encode(f.read())
+	#convert audio file to JSON
+	response = HttpResponse(audio_encoded, content_type='application/json')
+	return response
+>>>>>>> Stashed changes
 
 def login(request):
 	return render(request, 'login.html')

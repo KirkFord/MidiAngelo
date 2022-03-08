@@ -1,4 +1,5 @@
 from itertools import groupby
+from unittest import skip
 
 import pygame
 from PIL import Image
@@ -62,6 +63,10 @@ def convert(img_file, midi_file, play):
   pygame.init()
   data = get_song_data(img_file)
   song = create_midi(240, data)
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
   with open(midi_file, 'wb') as f:
     song.writeFile(f)
 
@@ -85,11 +90,12 @@ def unpackDataString(str):
         row = row.replace("(","")
         row = row.replace(")","")
         row = row.split(" ")
+        del row[-1]
         newrow = []
         for pixel in row:
             pixel = pixel.split(",")
             for i in range(0, len(pixel)):
-                pixel[i] = int(pixel[i])
+              pixel[i] = int(pixel[i])
             newrow.append(pixel)
         result.append(newrow)
     return result
