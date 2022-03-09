@@ -20,7 +20,10 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', views.home),
+    path('canvas/', views.canvas),
+    path('', views.login),
     path('login/', views.login),
     path('signup/', views.signup),
-    path('imagedata/', views.image)
+    path('imagedata/', views.image),
+    path('get_soundfonts/', views.getSoundFonts)
 ]
