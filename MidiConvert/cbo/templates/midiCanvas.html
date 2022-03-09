@@ -10,7 +10,17 @@
     <option value="green">Green</option>
     <option value="blue">Blue</option>
 </select>
-<button id="convert">Convert</button>
+<div>
+    <select id="soundfont_picker">
+    
+    </select>
+<!-- Used this button to pull soundfonts
+    <button id="reload_soundfonts" onclick="getSoundfonts();">Get Soundfonts</button>
+-->
+</div>
+<div>
+    <button id="convert">Convert</button>
+</div>
 <div id="mediaParent">
     <audio controls>
         <source id="source" src="" type="audio/ogg">
@@ -86,7 +96,7 @@
 
             var xhr = new XMLHttpRequest();
             xhr.open("POST", '/imagedata/', true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onreadystatechange = function(){
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200){
                     data="data:audio/ogg;base64,"+String(xhr.response);
@@ -105,7 +115,7 @@
                     document.getElementById("mediaParent").appendChild(new_audio);
                 }
             }
-            xhr.send(finalString);
+            xhr.send(JSON.stringify({img_string:finalString, soundfont:document.getElementById("soundfont_picker").value}));
             
         }
 
@@ -132,6 +142,27 @@
         }
         return array;
     }
+
+    function getSoundfonts() {
+        var xhr = new XMLHttpRequest();
+            xhr.open("GET", '/get_soundfonts/', true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function(){
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200){
+                    console.log(xhr.response);
+                    let soundfonts = JSON.parse(xhr.response);
+                    document.getElementById("soundfont_picker").innerHTML = '';
+                    for (s in soundfonts) {
+                        var sf = document.createElement("option");
+                        sf.setAttribute('value', soundfonts[s]);
+                        sf.innerHTML=soundfonts[s];
+                        document.getElementById("soundfont_picker").appendChild(sf);
+                    }
+                }
+            }
+            xhr.send();
+    }
+    getSoundfonts();
 </script>
 <style>
 #mainCanvas{
