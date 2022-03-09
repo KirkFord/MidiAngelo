@@ -1,5 +1,6 @@
 import sys
 from midi2audio import FluidSynth
+from pydub import AudioSegment
 
 """
 soundfont_name = sys.argv[1]
@@ -13,5 +14,17 @@ FluidSynth('soundfonts/' + str(soundfont_name)).midi_to_audio(midi_in_name, wav_
 """
 
 
-def createWav(midi_in_name, soundfont_name, wav_output_name):
-	FluidSynth(str(soundfont_name)).midi_to_audio(midi_in_name, wav_output_name)
+def createWav(midi_in_name, soundfont_name, wav_output_name, db_boost=0):
+	if db_boost != 0:
+		temp_wav_name = "temp_" + wav_output_name
+		FluidSynth(str(soundfont_name)).midi_to_audio(midi_in_name, temp_wav_name)
+		
+		volume = int(db_boost)
+		song = AudioSegment.from_wav(temp_wav_name)
+		if volume > 0:
+			volume_song = song + volume
+		elif volume < 0:
+			volume_song = song - abs(volume)
+		volume_song.export(wav_output_name, format="wav")
+	else:
+		FluidSynth(str(soundfont_name)).midi_to_audio(midi_in_name, wav_output_name)
