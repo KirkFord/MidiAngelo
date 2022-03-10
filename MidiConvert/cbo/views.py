@@ -12,7 +12,6 @@ import base64
 import glob
 
 def home(request):
-	print("test home")
 	return render(request, 'index.html')
 
 @csrf_exempt

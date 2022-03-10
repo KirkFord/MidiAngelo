@@ -63,6 +63,8 @@ def convert(img_file, midi_file, play):
   pygame.init()
   data = get_song_data(img_file)
   song = create_midi(240, data)
+
+  return song
   with open(midi_file, 'wb') as f:
     song.writeFile(f)
 
@@ -154,4 +156,4 @@ Converts a nested list of pixel RGB values into a midi file
 """
 def canvas2midi(outputFileName, P, show=False, playback=False):
     canvas2image(outputFileName+"-canvas2midiTEMP",P,1,show)
-    convert(outputFileName+"-canvas2midiTEMPx1.PNG",outputFileName+".midi",playback)
+    return convert(outputFileName+"-canvas2midiTEMPx1.PNG",outputFileName+".midi",playback)
