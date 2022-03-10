@@ -11,12 +11,17 @@
     <option value="blue">Blue</option>
 </select>
 <div>
-    <select id="soundfont_picker">
+    <p>Ctrl+Click to select multiple</p>
+    <select multiple id="soundfont_picker" style="min-height: 300px;">
     
     </select>
 <!-- Used this button to pull soundfonts
     <button id="reload_soundfonts" onclick="getSoundfonts();">Get Soundfonts</button>
 -->
+</div>
+<div>
+    <p>Increase Decibels before conversion</p>
+    <input id="db_boost" type="number" min="-50" max="50" value="0"/>
 </div>
 <div>
     <button id="convert">Convert</button>
@@ -115,7 +120,14 @@
                     document.getElementById("mediaParent").appendChild(new_audio);
                 }
             }
-            xhr.send(JSON.stringify({img_string:finalString, soundfont:document.getElementById("soundfont_picker").value}));
+
+            let soundfonts_selected = document.querySelectorAll('#soundfont_picker option:checked');
+            let soundfonts = Array.from(soundfonts_selected).map(el => el.value);
+            xhr.send(JSON.stringify({
+                img_string:finalString, 
+                soundfonts: soundfonts,
+                db_boost: document.getElementById("db_boost").value
+            }));
             
         }
 

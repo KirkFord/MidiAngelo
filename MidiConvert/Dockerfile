@@ -5,7 +5,8 @@ WORKDIR /app
 
 RUN python3 -m pip install --upgrade pip \
     && apt-get update \
-    && apt-get install -y fluidsynth
+    && apt-get install -y fluidsynth \
+    && apt-get install -y ffmpeg
 
 COPY ./requirements.txt /workspace/
 

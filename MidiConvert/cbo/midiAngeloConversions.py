@@ -64,7 +64,6 @@ def convert(img_file, midi_file, play):
   data = get_song_data(img_file)
   song = create_midi(240, data)
 
-  return song
   with open(midi_file, 'wb') as f:
     song.writeFile(f)
 
@@ -75,6 +74,7 @@ def convert(img_file, midi_file, play):
       pygame.mixer.music.fadeout(1000)
       pygame.mixer.music.stop()
       raise SystemExit
+  return True
 
 """
 unpacks data string into an array/grid of pixel values, returns a NxM nested list

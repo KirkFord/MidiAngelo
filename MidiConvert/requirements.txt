@@ -10,3 +10,4 @@ pydub
 pygame
 midiutil
 pillow
+ffmpeg
