@@ -118,16 +118,25 @@
                     new_audio.setAttribute('controls', 'controls');
                     new_audio.appendChild(new_source);
                     document.getElementById("mediaParent").appendChild(new_audio);
+                    document.getElementById("convert").disabled = false;
+                    document.getElementById("convert").innerHTML = 'Convert';
                 }
             }
 
             let soundfonts_selected = document.querySelectorAll('#soundfont_picker option:checked');
             let soundfonts = Array.from(soundfonts_selected).map(el => el.value);
+            if (soundfonts?.length < 1) {
+                alert("Please select at least one instrument first!");
+                return;
+            }  
+
             xhr.send(JSON.stringify({
                 img_string:finalString, 
                 soundfonts: soundfonts,
                 db_boost: document.getElementById("db_boost").value
             }));
+            document.getElementById("convert").disabled = true;
+            document.getElementById("convert").innerHTML = 'Converting';
             
         }
 
