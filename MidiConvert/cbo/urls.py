@@ -26,5 +26,6 @@ urlpatterns = [
     path('signup/', views.signup),
     path('imagedata/', views.image),
     path('get_soundfonts/', views.getSoundFonts),
-    path('testsuite/', views.views.runTestingSuite)
+    path('testsuite/', views.test),
+    path('runTests/', views.runTestingSuite)
 ]

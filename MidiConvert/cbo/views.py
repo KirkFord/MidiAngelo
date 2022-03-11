@@ -1,5 +1,5 @@
 import os
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 import json
 
 from django.shortcuts import render
@@ -14,6 +14,9 @@ from django.test import Client
 
 def home(request):
 	return render(request, 'index.html')
+
+def test(request):
+	return render(request, "test.html")
 
 @csrf_exempt
 def image(request):
@@ -66,7 +69,7 @@ def canvas(request):
 def signup(request):
 	return render(request, 'login.html')	
 
-#Input: a list of soundfont names
+#Input: an HttpRequest
 #Return: a list of soundfonts by their file location
 def getSoundFonts(request):
 
@@ -84,11 +87,12 @@ def getSoundFontsList(soundfonts):
 	return formatted_soundfonts
 
 #Run all of our tests and return a report
+@csrf_exempt
 def runTestingSuite(request):
 	tester = Client()
 	test_results = {
-		'pass':['The testing suite has been reached.'], 
+		'pass':['Server Health: Strong', 'The testing suite has been reached.'], 
 		'fail':[]
 	}
 
-	return HttpResponse(test_results, content_type='application/json')
+	return HttpResponse(json.dumps(test_results), content_type='application/json')
