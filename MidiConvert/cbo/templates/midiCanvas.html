@@ -55,6 +55,7 @@
 
 
         
+
         function hexToRgb(hex) {
             //simple hex to rgb by Tim Down on stackoverflow
             var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -64,6 +65,8 @@
                 b: parseInt(result[3], 16)
             } : null;
         }
+
+
         function startPosition(e){
             painting = true;
             draw(e);
@@ -90,7 +93,6 @@
 
         function convertTXT(){
             finalString = "";
-            finalString+= ""
             for (let i = 0; i < canvasPixels.length; i++){
                 for (let j = 0; j < canvasPixels[0].length; j++){
                     currentPixel = canvasPixels[i][j];
@@ -147,6 +149,26 @@
         canvas.addEventListener("mouseup", endPosition);
         canvas.addEventListener("mousemove", draw);
 
+        //TESTING 
+
+        //hexToRgb testing
+
+        //yellow = #FFFF00 = rgb(255,255,0)
+        //magenta = #FF00FF = rgb(255,0,255)
+        //eggshell = #F0EAD6 = rgb(240,234,214)
+        let hexToRGBTest = hexToRgb("#FFFF00");
+        if (hexToRGBTest.r != 255 || hexToRGBTest.g != 255 || hexToRGBTest.b != 0){
+            console.log("Test Failed in Hex to RGB test: yellow");
+        }
+        hexToRGBTest = hexToRgb("#FF00FF");
+        if (hexToRGBTest.r != 255 || hexToRGBTest.g != 0 || hexToRGBTest.b != 255){
+            console.log("Test Failed in Hex to RGB test: Magenta ");
+        }
+        hexToRGBTest = hexToRgb("#F0EAD6");
+        if (hexToRGBTest.r != 240 || hexToRGBTest.g != 234 || hexToRGBTest.b != 214){
+            console.log("Test Failed in Hex to RGB test: eggshell");
+        }
+
     });
 
     var BASE64_MARKER = ';base64,';
@@ -184,6 +206,16 @@
             xhr.send();
     }
     getSoundfonts();
+
+
+
+
+
+
+    
+
+
+    
 </script>
 <style>
 #mainCanvas{
