@@ -10,6 +10,7 @@ from . import midi_to_audio_conversion
 from django.conf import settings
 import base64
 import glob
+from django.test import Client
 
 def home(request):
 	return render(request, 'index.html')
@@ -17,17 +18,39 @@ def home(request):
 @csrf_exempt
 def image(request):
 	data = json.loads(request.body)
-	midi_string = data['img_string'] # image string to make into midi
+	if not data:
+		return HttpResponseBadRequest("There was no data provided to handle then request.")
+
+	midi_string = '' # image string to make into midi
+	if 'img_string' in data and isinstance(data['img_string'],str):
+		midi_string = str(data['img_string'])
+	else:
+		return HttpResponseBadRequest("No Image was provided or it was in an improper format.")
+
 	sounds = getSoundFontsList(data["soundfonts"]) #soundfont to use for conversion
+	if len(sounds)==0:
+		return HttpResponseBadRequest("No Sounds were provided or they could not be formatted by the server.")
+
 	db_boost = 0
-	if 'db_boost' in data and type(data['db_boost']) == 'int':
+	if 'db_boost' in data and isinstance(data['db_boost'], int):
 		db_boost = int(data['db_boost'])
+
 	midi_file_success = midiAngeloConversions.canvas2midi('output_midi', midi_string)
 	if not midi_file_success:
-		response = HttpResponseBadRequest("The Image could not be converted to MIDI")
-	midi_to_audio_conversion.overlayWavs(sounds, "output_midi.midi", 'output_audio.wav', db_boost)
+		response = HttpResponseBadRequest("The Image failed be converted to MIDI")
+	
+	try:
+		midi_to_audio_conversion.overlayWavs(sounds, "output_midi.midi", 'output_audio.wav', db_boost)
+	except:
+		RuntimeError
+		return HttpResponseBadRequest("Failed to create the song from selected sounds.")
 
-	fname = settings.BASE_DIR/"output_audio.wav"
+	try:
+		fname = settings.BASE_DIR/"output_audio.wav"
+	except:
+		RuntimeError
+		return HttpResponseBadRequest("The finalized audio file could not be found .")
+
 	with open(fname,"rb") as f: audio_encoded = base64.b64encode(f.read())
 	#convert audio file to JSON
 	response = HttpResponse(audio_encoded, content_type='application/json')
@@ -43,6 +66,8 @@ def canvas(request):
 def signup(request):
 	return render(request, 'login.html')	
 
+#Input: a list of soundfont names
+#Return: a list of soundfonts by their file location
 def getSoundFonts(request):
 
 	soundfont_names = []
@@ -57,3 +82,13 @@ def getSoundFontsList(soundfonts):
 		formatted_soundfonts.append("/app/cbo/soundfonts/"+soundfonts[i]+".sf2")
 	
 	return formatted_soundfonts
+
+#Run all of our tests and return a report
+def runTestingSuite(request):
+	tester = Client()
+	test_results = {
+		'pass':['The testing suite has been reached.'], 
+		'fail':[]
+	}
+
+	return HttpResponse(test_results, content_type='application/json')
