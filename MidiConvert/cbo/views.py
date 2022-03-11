@@ -12,12 +12,15 @@ import base64
 import glob
 from django.test import Client
 
+#Render the landing page
 def home(request):
 	return render(request, 'index.html')
 
+#Render the admin testing page
 def test(request):
 	return render(request, "test.html")
 
+#Convert an image in the request
 @csrf_exempt
 def image(request):
 	data = json.loads(request.body)
@@ -60,12 +63,15 @@ def image(request):
 
 	return response
 
+#Render the login page
 def login(request):
 	return render(request, 'login.html')
 
+#Render the drawing canvas page
 def canvas(request):
 	return render(request, 'midiCanvas.html')
 
+#Render the user signup page
 def signup(request):
 	return render(request, 'login.html')	
 
@@ -79,6 +85,8 @@ def getSoundFonts(request):
 		soundfont_names[s] = soundfont_names[s][20:-4]
 	return HttpResponse(json.dumps(soundfont_names), content_type='application/json')
 
+#Input: a list of strings with no file extensions
+#Return: a list of strings that relate to the filepaths
 def getSoundFontsList(soundfonts):
 	formatted_soundfonts = []
 	for i in range(len(soundfonts)):
@@ -94,5 +102,7 @@ def runTestingSuite(request):
 		'pass':['Server Health: Strong', 'The testing suite has been reached.'], 
 		'fail':[]
 	}
+
+	#Test getSoundFonts(tester):	
 
 	return HttpResponse(json.dumps(test_results), content_type='application/json')
