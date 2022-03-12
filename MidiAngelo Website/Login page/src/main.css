@@ -1,4 +1,5 @@
 body {
+
     --color-primary: #009579;
     --color-primary-dark: #007f67;
     --color-secondary: #252c6a;
@@ -12,9 +13,10 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 18px;
-    background: url(./background.jpg);
     background-size: cover;
 }
+
+/* Container box for highlighting the user login ----------------------------------------*/
 
 .container {
     width: 400px;
@@ -26,12 +28,14 @@ body {
     background: #ffffff;
 }
 
+/* Making the container box better ----------------------------------------*/
 .container,
 .form__input,
 .form__button {
     font: 500 1rem 'Quicksand', sans-serif;
 }
 
+/* Hiding the extra margins in forms to make it more consistent ----------------------------------------*/
 .form--hidden {
     display: none;
 }
@@ -49,15 +53,18 @@ body {
     text-align: center;
 }
 
+/* Aligning the error message to be displayed below the empty boxes ----------------------------------------*/
 .form__message {
     text-align: center;
     margin-bottom: 1rem;
 }
 
+/* Choosing the color of the message if it's a success ----------------------------------------*/
 .form__message--success {
     color: var(--color-success);
 }
 
+/* Choosing the color of the message if it's an error ----------------------------------------*/
 .form__message--error {
     color: var(--color-error);
 }
@@ -66,6 +73,7 @@ body {
     margin-bottom: 1rem;
 }
 
+/* Container box for highlighting the user login ----------------------------------------*/
 .form__input {
     display: block;
     width: 100%;
