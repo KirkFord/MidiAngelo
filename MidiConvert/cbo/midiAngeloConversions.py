@@ -25,7 +25,6 @@ def add_note(song, track, pitch, time, duration):
 
 
 def create_midi(tempo, data):
-  #print('Converting to MIDI.')
   song = MIDIFile(1)
   song.addTempo(0, 0, tempo)
 
@@ -41,9 +40,9 @@ def play_midi(music_file):
   clock = pygame.time.Clock()
   try:
     pygame.mixer.music.load(music_file)
-    # print("Music file %s loaded. Press Ctrl + C to stop playback." % music_file)
+    print("Music file %s loaded. Press Ctrl + C to stop playback." % music_file)
   except Exception as e:
-    # print("Error loading file: %s - %s" % (music_file, e))
+    print("Error loading file: %s - %s" % (music_file, e))
     return
   pygame.mixer.music.play()
   while pygame.mixer.music.get_busy():
