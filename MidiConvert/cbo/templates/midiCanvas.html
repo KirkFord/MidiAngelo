@@ -58,6 +58,7 @@
 
         function hexToRgb(hex) {
             //simple hex to rgb by Tim Down on stackoverflow
+            //changes a hex value to its given rgb value using regex
             var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
             return result ? {
                 r: parseInt(result[1], 16),
@@ -68,17 +69,21 @@
 
 
         function startPosition(e){
+            // enables painting when the mouse is pressed while the cursor is over the canvas
             painting = true;
             draw(e);
         }
         function endPosition(){
+            // disables painting when the mouse is released while the cursor is over the canvas
             painting = false;
             canvasctx.beginPath();
         }
         function changeColor(){
+            //changes the color of the brush when the select value is changed
             currentColor = colorSelect.value;
         }
         function draw(e){
+            //draws a "pixel" on the canvas wherever the mouse is when it is pressed down
             if(!painting) return;
             let scale = 16;
             let x = Math.round(e.clientX/scale)-1;
@@ -92,6 +97,8 @@
         }
 
         function convertTXT(){
+            //converts the picture to a string and sends it to the server where it is converted into an mp3 file
+            //and sent back to the page to be displayed in a playable format
             finalString = "";
             for (let i = 0; i < canvasPixels.length; i++){
                 for (let j = 0; j < canvasPixels[0].length; j++){
