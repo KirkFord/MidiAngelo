@@ -7,9 +7,6 @@ from midiutil import MIDIFile
 import random as rand
 import os
 
-A0_NOTE = 21
-C8_NOTE = 108
-
 # helper functions for conversions
 
 def lerp(min, max, note):
@@ -17,7 +14,7 @@ def lerp(min, max, note):
 
 
 def convert_rgb_to_note(r, g, b):
-  return lerp(A0_NOTE, C8_NOTE, int((r+g+b)/6.0)/255.0)
+  return lerp(21, 108, int((r+g+b)/6.0)/255.0)
 
 
 def add_note(song, track, pitch, time, duration):
