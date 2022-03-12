@@ -1,4 +1,4 @@
-"""cbo URL Configuration
+"""midiAngelo URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -26,5 +26,6 @@ urlpatterns = [
     path('signup/', views.signup),
     path('imagedata/', views.image),
     path('get_soundfonts/', views.getSoundFonts),
-    path('testsuite/', views.views.runTestingSuite)
+    path('testsuite/', views.test),
+    path('runTests/', views.runTestingSuite)
 ]
