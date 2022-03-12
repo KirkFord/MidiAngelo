@@ -3,7 +3,7 @@ import midiAngeloConversions
 
 n = len(sys.argv)
 if n != 3 :
-    print("INVALID INPUT: Three inputs required,", n-1,"provided.\n REQUIRED PARAMITERS: inputFileName outputFileName")
+    print("INVALID INPUT: Two inputs required,", n-1,"provided.\n REQUIRED PARAMITERS: dataString outputFileName")
     exit(1)
 
 print("calling ")

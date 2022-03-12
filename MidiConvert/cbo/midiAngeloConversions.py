@@ -4,6 +4,8 @@ from unittest import skip
 import pygame
 from PIL import Image
 from midiutil import MIDIFile
+import random as rand
+import os
 
 A0_NOTE = 21
 C8_NOTE = 108
@@ -98,6 +100,57 @@ def unpackDataString(str):
         result.append(newrow)
     return result
 
+def checkDataStringValidity(dataString):
+    dataStringResult = unpackDataString(dataString)
+
+    N = len(dataStringResult)
+    M = len(dataStringResult[0])
+
+    # checking that the dimenions of the Array all match
+    # rowSum = 0
+    # for row in dataStringResult:
+    #     rowsPixelSum = 0
+    #     for pixel in row:
+    #         rowsPixelSum += 1
+    #     rowSum += 1
+    #
+
+    # checks if the pixel array's values are the right data type and are within the correct interval
+    rowSum = 0
+    for row in dataStringResult:
+        rowsPixelSum = 0
+        for pixel in row:
+            for pixelValue in pixel:
+                if not(pixelValue>= 0 and pixelValue<= 255):
+                    return "Contains pixel Values outside of range [0,255]"
+            rowsPixelSum += 1
+        rowSum += 1
+
+    if (rowSum != N) or (rowsPixelSum != M):
+        return "Data string Provided yeilded improper diamentions"
+
+    return True
+
+
+def generateRandomDatastring():
+    N = rand.randint(2,128)
+    M = rand.randint(2,128)
+    result = ""
+
+    for i in range(N):
+
+        for j in range(M):
+            # result += "("
+            r = rand.randint(0,255)
+            g = rand.randint(0,255)
+            b = rand.randint(0, 255)
+            result += "(" + str(r) + "," + str(g) + "," + str(b) + ")"
+            if j!= M-1:
+                result+= " "
+        result += "\n"
+
+    return(result)
+
 
 # End of Helper Functions, The last three are funtions you would wnat to call upon
 
@@ -117,7 +170,6 @@ def canvas2image(outputFileName, dataString, scale, show=False):
     M = len(P[0])
 
     img = Image.new('RGB', (N, M), color=0)
-    # img.show()
     pixels = img.load()
 
     for i in range(img.size[0]):  # for every pixel:
@@ -149,11 +201,44 @@ def image2midi(inputFileName,outputFileName,playback=False):
 """ 
 Converts a nested list of pixel RGB values into a midi file
 @:param outputFileName -> the name of the midi file being generated. it will be saved in the working directory
-@:param P -> A NxM nested list of pixel values 
-    example: [[[r,g,b],[r,g,b]],[r,g,b],[r,g,b]] would represent a 2x2 image
+@:param dataString -> a string containg the exported data from  canvas
 @param show -> false by default. displays the image after generation, not recomended outside of testing
 @:param playback -> false by default. Played the midi file after conversion. not recomended outside of testing
 """
-def canvas2midi(outputFileName, P, show=False, playback=False):
-    canvas2image(outputFileName+"-canvas2midiTEMP",P,1,show)
+def canvas2midi(outputFileName, dataString, show=False, playback=False):
+    canvas2image(outputFileName +"-canvas2midiTEMP", dataString, 1, show)
     return convert(outputFileName+"-canvas2midiTEMPx1.PNG",outputFileName+".midi",playback)
+
+"""
+Test Driver for this file for the generation of images from canvas.
+Since the generation of .midi from image is done with an external 
+library I used I decided not to test it
+"""
+def runTestSuite():
+    test_results = {
+        'pass': ['Server Health: Strong', 'The testing suite has been reached.'],
+        'fail': []
+    }
+
+    # Testing reliability of data string unpacker
+    numOfTests = 100
+    for testNum in range(1,numOfTests+1):
+        result = checkDataStringValidity(generateRandomDatastring())
+        if result == True:
+            test_results['pass'].append("Random Datastring Generation " + str(testNum) + "/" + str(numOfTests) + " passed")
+        else:
+            test_results['fail'].append("Random Datastring Generation " + str(testNum) + "/" + str(numOfTests) + " Reason:"+result)
+
+    # Testing Random generation of Images from randomly generated
+    numofRandTests = 100
+    show = False
+    for testNum in range(1,numofRandTests+1):
+        try:
+            randomDataString = generateRandomDatastring()
+            canvas2image(("test#"+str(testNum)),randomDataString,1,show)
+            os.remove("test#"+str(testNum)+"x1.PNG")
+        except RuntimeError:
+            test_results['fail'].append("Random Image Generation " + str(testNum) + "/" + str(numofRandTests) + " had a RuntimeError")
+            raise
+        test_results['pass'].append("Random Image Generation "+str(testNum)+"/"+str(numofRandTests)+" passed")
+

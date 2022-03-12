@@ -12,6 +12,9 @@ import base64
 import glob
 from django.test import Client
 
+from .midiAngeloConversions import checkDataStringValidity, generateRandomDatastring, canvas2image
+
+
 def home(request):
 	return render(request, 'index.html')
 
@@ -94,5 +97,30 @@ def runTestingSuite(request):
 		'pass':['Server Health: Strong', 'The testing suite has been reached.'], 
 		'fail':[]
 	}
+
+	# Testing reliability of data string unpacker
+	numOfTests = 100
+	for testNum in range(1, numOfTests + 1):
+		result = checkDataStringValidity(generateRandomDatastring())
+		if result == True:
+			test_results['pass'].append(
+				"Random Datastring Generation " + str(testNum) + "/" + str(numOfTests) + " passed")
+		else:
+			test_results['fail'].append(
+				"Random Datastring Generation " + str(testNum) + "/" + str(numOfTests) + " Reason:" + result)
+
+	# Testing Random generation of Images from randomly generated
+	numofRandTests = 100
+	show = False
+	for testNum in range(1, numofRandTests + 1):
+		try:
+			randomDataString = generateRandomDatastring()
+			canvas2image(("test#" + str(testNum)), randomDataString, 1, show)
+			os.remove("test#" + str(testNum) + "x1.PNG")
+		except RuntimeError:
+			test_results['fail'].append(
+				"Random Image Generation " + str(testNum) + "/" + str(numofRandTests) + " had a RuntimeError")
+			raise
+		test_results['pass'].append("Random Image Generation " + str(testNum) + "/" + str(numofRandTests) + " passed")
 
 	return HttpResponse(json.dumps(test_results), content_type='application/json')
