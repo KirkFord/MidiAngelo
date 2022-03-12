@@ -77,6 +77,7 @@ def overlayWavs(soundfont_list, midi_in_name, wav_output_name, db_boost=0):
     except:
         print("an exception occured: one of the file paths/files does not exist")
         return -1
+    createWav(midi_in_name, soundfont_list[0], "sound0.wav", db_boost)
     sound_base = AudioSegment.from_wav("sound0.wav")
     for i in range(1, number_of_overlays):
         try:
@@ -84,6 +85,7 @@ def overlayWavs(soundfont_list, midi_in_name, wav_output_name, db_boost=0):
         except:
             print("an exception occured: one of the file paths/files does not exist")
             return -1
+        createWav(midi_in_name, soundfont_list[i], "sound" + str(i) + ".wav", db_boost)
         sound_added = AudioSegment.from_wav("sound" + str(i) + ".wav")
         sounds.append(sound_added)
     # rename the file into the parameter passed in
@@ -95,3 +97,4 @@ def overlayWavs(soundfont_list, midi_in_name, wav_output_name, db_boost=0):
         print("find deleteables did not delete anything!")
         test_flag = -1
     return test_flag
+
