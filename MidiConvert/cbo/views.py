@@ -157,21 +157,21 @@ def runTestingSuite(request):
 		test_results['pass'].append("Test 7: basic conversion - overlayWav works - higher Db")
 	else:
 		test_results['fail'].append(
-			"Test 7: Error in basic conversion - overlayWav does not work - higher db - perhaps file path error?")
+			"Test 8: Error in basic conversion - overlayWav does not work - higher db - perhaps file path error?")
 
 	# Test 9
 	if midi_to_audio_conversion.overlayWavs(sound_list, '/app/cbo/soundfonts/Early Ens.sf2', 'melody.wav', -10) == 0:
 		test_results['pass'].append("Test 7: basic conversion - overlayWav works - lowered Db")
 	else:
 		test_results['fail'].append(
-			"Test 7: Error in basic conversion - overlayWav does not work - lowered db - perhaps file path error?")
+			"Test 9: Error in basic conversion - overlayWav does not work - lowered db - perhaps file path error?")
 
 	# Test 10
 	if midi_to_audio_conversion.overlayWavs(bad_sound_list, '/app/cbo/soundfonts/Early Ens.sf2', 'melody.wav') == -1:
 		test_results['pass'].append("Test 7: basic conversion - overlayWav has correctly identified an error in the soundlist - no added Db")
 	else:
 		test_results['fail'].append(
-			"Test 7: Error in basic conversion - overlayWav does not recognize bad file - no added db - perhaps file path error?")
+			"Test 10: Error in basic conversion - overlayWav does not recognize bad file - no added db - perhaps file path error?")
 
 	#Test getSoundFonts(tester):	
 
