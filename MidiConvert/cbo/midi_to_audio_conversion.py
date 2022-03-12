@@ -73,11 +73,13 @@ def overlayWavs(soundfont_list, midi_in_name, wav_output_name, db_boost=0):
     number_of_overlays = len(soundfont_list)
     sounds = []
     try:
-        createWav(midi_in_name, soundfont_list[0], "sound0.wav", db_boost)
+        created_wav = createWav(midi_in_name, soundfont_list[0], "sound0.wav", db_boost)
     except:
         print("an exception occured: one of the file paths/files does not exist")
         return -1
-    createWav(midi_in_name, soundfont_list[0], "sound0.wav", db_boost)
+    if not created_wav:
+        return -1
+    #createWav(midi_in_name, soundfont_list[0], "sound0.wav", db_boost)
     sound_base = AudioSegment.from_wav("sound0.wav")
     for i in range(1, number_of_overlays):
         try:

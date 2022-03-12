@@ -146,28 +146,28 @@ def runTestingSuite(request):
 					  '/app/cbo/soundfonts/Sax Section.sf2', '/app/cbo/soundfonts/Celesta.sf2']
 
 	# Test 7
-	if midi_to_audio_conversion.overlayWavs(sound_list, '/app/cbo/soundfonts/Early Ens.sf2', 'melody.wav') == 0:
+	if midi_to_audio_conversion.overlayWavs(sound_list, settings.BASE_DIR/'app/cbo/filein.mid', 'melody.wav') == 0:
 		test_results['pass'].append("Test 7: basic conversion - overlayWav works - no added Db")
 	else:
 		test_results['fail'].append(
 			"Test 7: Error in basic conversion - overlayWav does not work - no added db - perhaps file path error?")
 
 	# Test 8
-	if midi_to_audio_conversion.overlayWavs(sound_list, '/app/cbo/soundfonts/Early Ens.sf2', 'melody.wav', 10) == 0:
+	if midi_to_audio_conversion.overlayWavs(sound_list, settings.BASE_DIR/'app/cbo/filein.mid', 'melody.wav', 10) == 0:
 		test_results['pass'].append("Test 7: basic conversion - overlayWav works - higher Db")
 	else:
 		test_results['fail'].append(
 			"Test 8: Error in basic conversion - overlayWav does not work - higher db - perhaps file path error?")
 
 	# Test 9
-	if midi_to_audio_conversion.overlayWavs(sound_list, '/app/cbo/soundfonts/Early Ens.sf2', 'melody.wav', -10) == 0:
+	if midi_to_audio_conversion.overlayWavs(sound_list, settings.BASE_DIR/'app/cbo/filein.mid', 'melody.wav', -10) == 0:
 		test_results['pass'].append("Test 7: basic conversion - overlayWav works - lowered Db")
 	else:
 		test_results['fail'].append(
 			"Test 9: Error in basic conversion - overlayWav does not work - lowered db - perhaps file path error?")
 
 	# Test 10
-	if midi_to_audio_conversion.overlayWavs(bad_sound_list, '/app/cbo/soundfonts/Early Ens.sf2', 'melody.wav') == -1:
+	if midi_to_audio_conversion.overlayWavs(bad_sound_list, settings.BASE_DIR/'app/cbo/filein.mid', 'melody.wav') == -1:
 		test_results['pass'].append("Test 7: basic conversion - overlayWav has correctly identified an error in the soundlist - no added Db")
 	else:
 		test_results['fail'].append(
