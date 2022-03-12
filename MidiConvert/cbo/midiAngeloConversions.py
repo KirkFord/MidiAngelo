@@ -54,9 +54,9 @@ def get_song_data(filename):
   try:
     im = Image.open(filename).convert('RGB')
   except Exception as e:
-    # print("Error loading image: %s" % e)
+    print("Error loading image: %s" % e)
     raise SystemExit
-  # print("Img %s loaded." % filename)
+  print("Img %s loaded." % filename)
   w, h = im.size
   return [convert_rgb_to_note(*im.getpixel((x, y))) for y in range(h) for x in range(w)]
 
@@ -106,15 +106,6 @@ def checkDataStringValidity(dataString):
     N = len(dataStringResult)
     M = len(dataStringResult[0])
 
-    # checking that the dimenions of the Array all match
-    # rowSum = 0
-    # for row in dataStringResult:
-    #     rowsPixelSum = 0
-    #     for pixel in row:
-    #         rowsPixelSum += 1
-    #     rowSum += 1
-    #
-
     # checks if the pixel array's values are the right data type and are within the correct interval
     rowSum = 0
     for row in dataStringResult:
@@ -140,7 +131,6 @@ def generateRandomDatastring():
     for i in range(N):
 
         for j in range(M):
-            # result += "("
             r = rand.randint(0,255)
             g = rand.randint(0,255)
             b = rand.randint(0, 255)
@@ -213,6 +203,7 @@ def canvas2midi(outputFileName, dataString, show=False, playback=False):
 Test Driver for this file for the generation of images from canvas.
 Since the generation of .midi from image is done with an external 
 library I used I decided not to test it
+These tests can also be found in views.py under the testsuite function
 """
 def runTestSuite():
     test_results = {
