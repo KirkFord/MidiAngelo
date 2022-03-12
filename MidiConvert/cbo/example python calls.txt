@@ -25,3 +25,15 @@ an integer (other than zero). Positive integers will make the .wav louder, while
 
 example:
 python audio_volume_adjuster.py 'output.wav' 'output_volume.wav' 25
+
+
+Canvas to midi converion takes:
+
+a string name repressenting the output name of the .midi file
+a string that hold the exported data from the canvas
+
+example for calling from terminal:
+python3 canvas2midi.py outputFileName "(255,255,255) (255,0,0)\n(0,255,0) (0,0,255)\n"
+
+example for calling function in python:
+canvas2midi(outputFileName,"(255,255,255) (255,0,0)\n(0,255,0) (0,0,255)\n")
