@@ -1,1 +1,6 @@
-{"users":{}}
+{
+	"users": {
+		"chris": {"username": "chris", "password": "dc91543fcb8e5934f3696f91d58680f00219ab975969f79e06ddfd57776bf788:543f6779313e42d9ace2a2faf06bf76e", "email": "chris@hotmail.com"}, 
+		"jim": {"username": "jim", "password": "26bdca3edc19772e6c0f49ba91d25cc7d39e5ab995baacdf4ce8e0dac4fe4afb:5d316289a88940fa9450439ccf3feaa0", "email": "jim@hotmail.com"}
+	}
+}

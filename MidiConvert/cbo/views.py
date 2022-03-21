@@ -182,16 +182,17 @@ def runTestingSuite(request):
 
 	return HttpResponse(json.dumps(test_results), content_type='application/json')
 
+@csrf_exempt
 def validateUser(request):
 	
-	data = request.body
+	data = json.loads(request.body)
 	password = data['password']
 	username = data['username']
 
 
 	#load the database
-	f = open(settings.BASE_DIR/'cbo/database.json')
-	db = json.load(f.read())
+	f = open(settings.BASE_DIR/'cbo/database.json', 'r')
+	db = json.loads(f.read())
 	f.close()
 
 	result = {
@@ -205,12 +206,12 @@ def validateUser(request):
 		result['message'] = "The username is not valid"
 		return HttpResponse(json.dumps(result), content_type='application/json')
 	#check if the username exists
-	if username not in db.keys():
+	if username not in db['users'].keys():
 		result['code'] = 500
 		result['message'] = "The user does not exist"
 		return HttpResponse(json.dumps(result), content_type='application/json')
 
-	user = db[username]
+	user = db['users'][username]
 
 	if check_password(user['password'], hash_password(password)):
 		return HttpResponse(json.dumps(result), content_type='application/json')
@@ -218,36 +219,41 @@ def validateUser(request):
 		result['code'] = 500
 		result['message'] = "Incorrect Password"
 		return HttpResponse(json.dumps(result), content_type='application/json')
-	
+
+@csrf_exempt	
 def createUser(request):
-	data = request.body
+	data = json.loads(request.body)
 	password = data['password']
 	username = data['username']
+	email = data['email']
 
+	#load the database as a readable file
+	f = open(settings.BASE_DIR/'cbo/database.json', 'r')
+	db = json.load(f)
+	f.close()
 
-	#load the database
-	f = open(settings.BASE_DIR/'cbo/database.json')
-	db = json.load(f.read())
+	result = {
+		'code':200,
+		'message':'Account Created'
+	}
 
 	if not isinstance(username, str) or len(username) > 20:
 		result['code'] = 500
 		result['message'] = "The username is not valid"
 		return HttpResponse(json.dumps(result), content_type='application/json')
 	#check if the username exists
-	if username not in db.keys():
+	if username in db['users'].keys():
 		result['code'] = 500
-		result['message'] = "The user does not exist"
+		result['message'] = "The user already exists"
 		return HttpResponse(json.dumps(result), content_type='application/json')
 
-	result = {
-		'code':200,
-		'message':'Successful Login'
-	}
-	hashed_password = hash_password(new_pass)
-	result = {
-		'code':200,
-		'message':'Account Created'
-	}
+	hashed_password = hash_password(str(password))
+	db['users'][username] = {'username':username, 'password':hashed_password, 'email':email}
+
+	#open database as a writeable file
+	f = open(settings.BASE_DIR/'cbo/database.json', 'w')
+	json.dump(db, f)
+
 	return HttpResponse(json.dumps(result), content_type='application/json')
 
 def hash_password(password):
