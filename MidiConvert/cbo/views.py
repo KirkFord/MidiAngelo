@@ -15,6 +15,12 @@ from django.test import Client
 from .midiAngeloConversions import checkDataStringValidity, generateRandomDatastring, canvas2image
 
 
+#libraries for password hashing
+import uuid
+import hashlib
+ 
+
+#Render the landing page
 def home(request):
 	return render(request, 'index.html')
 
@@ -203,3 +209,88 @@ def runTestingSuite(request):
 		test_results['pass'].append("Random Image Generation " + str(testNum) + "/" + str(numofRandTests) + " passed")
 
 	return HttpResponse(json.dumps(test_results), content_type='application/json')
+
+@csrf_exempt
+def validateUser(request):
+	
+	data = json.loads(request.body)
+	password = data['password']
+	username = data['username']
+
+
+	#load the database
+	f = open(settings.BASE_DIR/'cbo/database.json', 'r')
+	db = json.loads(f.read())
+	f.close()
+
+	result = {
+		'code':200,
+		'message':'Successful Login'
+	}
+
+	#check for valid username
+	if not isinstance(username, str) or len(username) > 20:
+		result['code'] = 500
+		result['message'] = "The username is not valid"
+		return HttpResponse(json.dumps(result), content_type='application/json')
+	#check if the username exists
+	if username not in db['users'].keys():
+		result['code'] = 500
+		result['message'] = "The user does not exist"
+		return HttpResponse(json.dumps(result), content_type='application/json')
+
+	user = db['users'][username]
+
+	if check_password(user['password'], hash_password(password)):
+		return HttpResponse(json.dumps(result), content_type='application/json')
+	else:
+		result['code'] = 500
+		result['message'] = "Incorrect Password"
+		return HttpResponse(json.dumps(result), content_type='application/json')
+
+@csrf_exempt	
+def createUser(request):
+	data = json.loads(request.body)
+	password = data['password']
+	username = data['username']
+	email = data['email']
+
+	#load the database as a readable file
+	f = open(settings.BASE_DIR/'cbo/database.json', 'r')
+	db = json.load(f)
+	f.close()
+
+	result = {
+		'code':200,
+		'message':'Account Created'
+	}
+
+	if not isinstance(username, str) or len(username) > 20:
+		result['code'] = 500
+		result['message'] = "The username is not valid"
+		return HttpResponse(json.dumps(result), content_type='application/json')
+	#check if the username exists
+	if username in db['users'].keys():
+		result['code'] = 500
+		result['message'] = "The user already exists"
+		return HttpResponse(json.dumps(result), content_type='application/json')
+
+	hashed_password = hash_password(str(password))
+	db['users'][username] = {'username':username, 'password':hashed_password, 'email':email}
+
+	#open database as a writeable file
+	f = open(settings.BASE_DIR/'cbo/database.json', 'w')
+	json.dump(db, f)
+
+	return HttpResponse(json.dumps(result), content_type='application/json')
+
+def hash_password(password):
+    # uuid is used to generate a random number
+    salt = uuid.uuid4().hex
+    return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+    
+def check_password(hashed_password, user_password):
+    password, salt = hashed_password.split(':')
+    return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+ 
+	
