@@ -110,76 +110,48 @@ def runTestingSuite(request):
 		'pass':['Server Health: Strong', 'The testing suite has been reached.'], 
 		'fail':[]
 	}
-	# TEST SECTION 1: createWav
 	# Test 1
-	if midi_to_audio_conversion.createWav('filein.midd', '/app/cbo/soundfonts/Early Ens.sf2', 'melody.wav') == -1:
-		test_results['pass'].append("Test 1: midi input extension detection pass")
+	if midi_to_audio_conversion.createWav(settings.BASE_DIR/'cbo/filein.mid', settings.BASE_DIR/'cbo/soundfonts/Early Ens.sf2', 'melody_loud.wav', 20) == 0:
+		test_results['pass'].append("Test 1: decibel conversion output - positive value pass")
 	else:
-		test_results['fail'].append("Test 1: Error in midi input extension detection")
+		test_results['fail'].append("Test 1: Error decibel conversion output - not turning up volume")
 
 	# Test 2
-	if midi_to_audio_conversion.createWav('filein.mid', '/app/cbo/soundfonts/Early Ens.sf3', 'melody.wav') == -1:
-		test_results['pass'].append("Test 2: soundfont input extension detection pass")
+	if midi_to_audio_conversion.createWav(settings.BASE_DIR/'cbo/filein.mid', settings.BASE_DIR/'cbo/soundfonts/Early Ens.sf2', 'melody_quiet.wav', -20) == 0:
+		test_results['pass'].append("Test 2: decibel conversion output - negative value pass")
 	else:
-		test_results['fail'].append("Test 2: Error in soundfont input extension detection")
+		test_results['fail'].append("Test 2: Error decibel conversion output - not turning down volume")
 
 	# Test 3
-	if midi_to_audio_conversion.createWav('filein.mid', '/app/cbo/soundfonts/Early Ens.sf2', 'melody.wave') == -1:
-		test_results['pass'].append("Test 3: wav output extension detection pass")
+	if midi_to_audio_conversion.createWav(settings.BASE_DIR/'cbo/filein.mid', settings.BASE_DIR/'cbo/soundfonts/Early Ens.sf2', 'melody_normal.wav') == 0:
+		test_results['pass'].append("Test 3: basic conversion - no decibel alteration pass")
 	else:
-		test_results['fail'].append("Test 3: Error in wav output extension detection")
-
-	# Test 4
-	if midi_to_audio_conversion.createWav('filein.mid', '/app/cbo/soundfonts/Early Ens.sf2', 'melody.wav',20) == 1:
-		test_results['pass'].append("Test 4: decibel conversion output - positive value pass")
-	else:
-		test_results['fail'].append("Test 4: Error decibel conversion output - not turning up volume")
-
-	# Test 5
-	if midi_to_audio_conversion.createWav('filein.mid', '/app/cbo/soundfonts/Early Ens.sf2', 'melody.wav',-20) == 2:
-		test_results['pass'].append("Test 5: decibel conversion output - negative value pass")
-	else:
-		test_results['fail'].append("Test 5: Error decibel conversion output - not turning down volume")
-
-	# Test 6
-	if midi_to_audio_conversion.createWav('filein.mid', '/app/cbo/soundfonts/Early Ens.sf2', 'melody.wav') == 3:
-		test_results['pass'].append("Test 6: basic conversion - no decibel alteration pass")
-	else:
-		test_results['fail'].append("Test 6: Error in basic conversion - no decibel alteration")
+		test_results['fail'].append("Test 3: Error in basic conversion - no decibel alteration")
 
 	# TEST SECTION 2: OVERLAYWAV
-	sound_list = ['/app/cbo/soundfonts/Early Ens.sf2', '/app/cbo/soundfonts/Piano.sf2',
-				  '/app/cbo/soundfonts/Sax Section.sf2', '/app/cbo/soundfonts/Celesta.sf2']
-	bad_sound_list = ['/app/cbo/soundfonts/Early Ens.sf2', '/app/cbo/soundfonts/Piano.sf3',
-					  '/app/cbo/soundfonts/Sax Section.sf2', '/app/cbo/soundfonts/Celesta.sf2']
+	sound_list = [settings.BASE_DIR/'cbo/soundfonts/Early Ens.sf2', settings.BASE_DIR/'cbo/soundfonts/Piano.sf2',
+				  settings.BASE_DIR/'cbo/soundfonts/Sax Section.sf2', settings.BASE_DIR/'cbo/soundfonts/Celesta.sf2']
 
-	# Test 7
-	if midi_to_audio_conversion.overlayWavs(sound_list, settings.BASE_DIR/'app/cbo/filein.mid', 'melody.wav') == 0:
-		test_results['pass'].append("Test 7: basic conversion - overlayWav works - no added Db")
+	# Test 4
+	if midi_to_audio_conversion.overlayWavs(sound_list, settings.BASE_DIR/'cbo/filein.mid', 'combo_normal.wav') == 0:
+		test_results['pass'].append("Test 4: basic conversion - overlayWav works - no added Db")
 	else:
 		test_results['fail'].append(
-			"Test 7: Error in basic conversion - overlayWav does not work - no added db - perhaps file path error?")
+			"Test 4: Error in basic conversion - overlayWav does not work - no added db - perhaps file path error?")
 
-	# Test 8
-	if midi_to_audio_conversion.overlayWavs(sound_list, settings.BASE_DIR/'app/cbo/filein.mid', 'melody.wav', 10) == 0:
-		test_results['pass'].append("Test 7: basic conversion - overlayWav works - higher Db")
+	# Test 5
+	if midi_to_audio_conversion.overlayWavs(sound_list, settings.BASE_DIR/'cbo/filein.mid', 'combo_loud.wav',20) == 0:
+		test_results['pass'].append("Test 5: basic conversion - overlayWav works - higher Db")
 	else:
 		test_results['fail'].append(
-			"Test 8: Error in basic conversion - overlayWav does not work - higher db - perhaps file path error?")
+			"Test 5: Error in basic conversion - overlayWav does not work - higher db - perhaps file path error?")
 
-	# Test 9
-	if midi_to_audio_conversion.overlayWavs(sound_list, settings.BASE_DIR/'app/cbo/filein.mid', 'melody.wav', -10) == 0:
-		test_results['pass'].append("Test 7: basic conversion - overlayWav works - lowered Db")
+	# Test 6
+	if midi_to_audio_conversion.overlayWavs(sound_list, settings.BASE_DIR/'cbo/filein.mid', 'combo_quiet.wav',-20) == 0:
+		test_results['pass'].append("Test 6: basic conversion - overlayWav works - lowered Db")
 	else:
 		test_results['fail'].append(
-			"Test 9: Error in basic conversion - overlayWav does not work - lowered db - perhaps file path error?")
-
-	# Test 10
-	if midi_to_audio_conversion.overlayWavs(bad_sound_list, settings.BASE_DIR/'app/cbo/filein.mid', 'melody.wav') == -1:
-		test_results['pass'].append("Test 7: basic conversion - overlayWav has correctly identified an error in the soundlist - no added Db")
-	else:
-		test_results['fail'].append(
-			"Test 10: Error in basic conversion - overlayWav does not recognize bad file - no added db - perhaps file path error?")
+			"Test 6: Error in basic conversion - overlayWav does not work - lowered db - perhaps file path error?")
 
 	#Test getSoundFonts(tester):	
 
