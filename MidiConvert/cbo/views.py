@@ -213,7 +213,10 @@ def validateUser(request):
 
 	user = db['users'][username]
 
-	if check_password(user['password'], hash_password(password)):
+	if check_password(user['password'], password):
+
+		result['payload'] = user
+		result['payload'].pop("password")
 		return HttpResponse(json.dumps(result), content_type='application/json')
 	else:
 		result['code'] = 500
