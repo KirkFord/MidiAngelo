@@ -138,11 +138,11 @@
                 alert("Please select at least one instrument first!");
                 return;
             }  
-
+            var db_number = parseInt(document.getElementById("db_boost").value, 10)
             xhr.send(JSON.stringify({
                 img_string:finalString, 
                 soundfonts: soundfonts,
-                db_boost: document.getElementById("db_boost").value
+                db_boost: db_number
             }));
             document.getElementById("convert").disabled = true;
             document.getElementById("convert").innerHTML = 'Converting';

@@ -1,9 +1,9 @@
 import sys
 from pydub import AudioSegment
 
-audio_in = sys.argv[1]
-audio_out = sys.argv[2]
-volume = int(sys.argv[3])
+audio_in = "output_audio.wav"
+audio_out = "louder_output_audio.wav"
+volume = 20
 #SMALL VOLUME SECTION
 #SOME WE CAN EITHER USE THIS FOR VOLUME OR TO JUST GENERALLY MAKE THE .WAVS LOUDER
 song = AudioSegment.from_wav(audio_in)
