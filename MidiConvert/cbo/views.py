@@ -208,6 +208,8 @@ def runTestingSuite(request):
 			raise
 		test_results['pass'].append("Random Image Generation " + str(testNum) + "/" + str(numofRandTests) + " passed")
 
+	
+
 	return HttpResponse(json.dumps(test_results), content_type='application/json')
 
 @csrf_exempt
