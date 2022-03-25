@@ -265,7 +265,7 @@ function loginUser() {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200){
             result = JSON.parse(xhr.response);
             if (result.code == 200) {
-                localStorage.setItem("user", result.payload);
+                localStorage.setItem("user", JSON.stringify(result.payload));
                 
                 window.location.href = '/home/';
             } else {
