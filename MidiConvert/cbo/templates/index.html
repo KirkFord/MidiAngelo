@@ -47,7 +47,7 @@
   <body>
   <div class="torn-top"></div>
   <!-- HEADER -->
-  <div id="header"> <a href="index.html"></a>
+  <div id="header"> <a href="/home"></a>
     <!-- search -->
     <div class="top-search">
       <form  method="get" id="searchform" action="#">
@@ -62,7 +62,7 @@
     <div class="wrapper-header">
       <!-- navigation -->
       <ul id="nav" class="sf-menu">
-        <li class="current_page_item"><a href="index.html">HOME</a></li>
+        <li class="current_page_item"><a href="/home">HOME</a></li>
         <li><a href="about.html">FEATURES</a>
           <ul>
             <li><a href="about.html">LAYOUT</a></li>
@@ -79,15 +79,6 @@
         </li>
         <li ><a href="Login page/Login.html">LOGIN</a></li>
         <li><a href="contact.html">CONTACT</a></li>
-        <li><a href="#">COLOR SKINS</a>
-          <ul>
-            <li><a href="index.html">YELLOW</a></li>
-            <li><a href="blue.html">BLUE</a></li>
-            <li><a href="red.html">RED</a></li>
-            <li><a href="pink.html">PINK</a></li>
-            <li><a href="green.html">GREEN</a></li>
-          </ul>
-        </li>
       </ul>
       <!-- ENDS navigation -->
     </div>
@@ -105,14 +96,14 @@
       <!-- slideshow -->
       <div id="slideshow"> <a href="#" id="slideshow-link" ><span></span></a>
         <ul id="slides">
-          <li><a href="#"><img src="slides/01.jpg" alt="" /></a></li>
-          <li><a href="#"><img src="slides/02.jpg" alt="" /></a></li>
-          <li><a href="#"><img src="slides/03.jpg" alt="" /></a></li>
-          <li><a href="#"><img src="slides/01.jpg" alt="" /></a></li>
-          <li><a href="#"><img src="slides/02.jpg" alt="" /></a></li>
-          <li><a href="#"><img src="slides/03.jpg" alt="" /></a></li>
-          <li><a href="#"><img src="slides/01.jpg" alt="" /></a></li>
-          <li><a href="#"><img src="slides/02.jpg" alt="" /></a></li>
+          <li><a href="#"><img src={% static "slides/01.jpg" %} alt="" /></a></li>
+          <li><a href="#"><img src={% static "slides/02.jpg" %} alt="" /></a></li>
+          <li><a href="#"><img src={% static "slides/03.jpg" %} alt="" /></a></li>
+          <li><a href="#"><img src={% static "slides/01.jpg" %} alt="" /></a></li>
+          <li><a href="#"><img src={% static "slides/02.jpg" %} alt="" /></a></li>
+          <li><a href="#"><img src={% static "slides/03.jpg" %} alt="" /></a></li>
+          <li><a href="#"><img src={% static "slides/01.jpg" %} alt="" /></a></li>
+          <li><a href="#"><img src={% static "slides/02.jpg" %} alt="" /></a></li>
         </ul>
       </div>
       <!-- ENDS slideshow -->
@@ -125,7 +116,7 @@
         <li class="block">
           <div class="img-holder">
             <p class="block-title ">Want to take your NFT to another level?</p>
-            <a href="about.html" ><img src="img/dummies/NFT cover.jpeg" alt="" class="thumb" /> </a> </div>
+            <a href="about.html" ><img src={% static "img/dummies/NFT cover.jpeg" %} alt="" class="thumb" /> </a> </div>
           <div class="block-text"> Login and upload (or create) your NFT and sell it with its own tune!
             <p><a href="Login page/Login.html" class="link-button"><span>LOGIN</span></a></p>
           </div>
@@ -133,7 +124,7 @@
         <li class="block">
           <div class="img-holder">
             <p class="block-title ">CREATE YOUR ART AND MUSIC.</p>
-            <a href="about.html" ><img src="img/dummies/download (2).jpeg" alt="" class="thumb" /> </a> </div>
+            <a href="about.html" ><img src={% static "img/dummies/download (2).jpeg" %} alt="" class="thumb" /> </a> </div>
           <div class="block-text">You can draw whatever you feel like and hear your art come to life!
             <p><a href="about.html" class="link-button"><span>FEATURES</span></a></p>
           </div>
@@ -141,7 +132,7 @@
         <li class="block">
           <div class="img-holder">
             <p class="block-title ">ADD DIFFERENT INSTRUMENTS TO YOUR MP3 FILE</p>
-            <a href="about.html" ><img src="img/dummies/download (1).jpeg" alt="" class="thumb" /> </a> </div>
+            <a href="about.html" ><img src={% static "img/dummies/download (1).jpeg" %} alt="" class="thumb" /> </a> </div>
           <div class="block-text">Choose from the different instruments included to create the music you want!
             <p><a href="about.html" class="link-button"><span>FEATURES</span></a></p>
           </div>
@@ -149,7 +140,7 @@
         <li class="block">
           <div class="img-holder">
             <p class="block-title ">.midi TO MP3</p>
-            <a href="about.html" ><img src="img/dummies/download.jpeg" alt="" class="thumb" /> </a> </div>
+            <a href="about.html" ><img src={% static "img/dummies/download.jpeg" %} alt="" class="thumb" /> </a> </div>
           <div class="block-text">Upload your .midi file and you can convert it to mp3. Easy and fast!
             <p><a href="about.html" class="link-button"><span>FEATURES</span></a></p>
           </div>
