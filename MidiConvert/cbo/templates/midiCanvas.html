@@ -24,18 +24,21 @@
         </div>
     </div>
 </nav>
-<div class="container" style="margin-top:15px;">
+<div class="container" style="margin-top:15px; text-align: center;">
     <div class="row justify-content-md-center">
         <div class="col col-12">
-            <canvas id="mainCanvas" width="16" height="16" style="width:256px;height:256px"></canvas>
-            <br>
-            <select name="colors" id="colors">
-                <option value="black">Black</option>
-                <option value="white">White</option>
-                <option value="red">Red</option>
-                <option value="green">Green</option>
-                <option value="blue">Blue</option>
-            </select>
+            <div id="canvasStuff">
+                <input type="number" id="dimensionX" value="16" min="2"max="128">
+                <label for="dimensionY"> X </label>
+                <input type="number" id="dimensionY" value="16" min="2"max="128">
+                <button type="button" id="changeDim" title="WARNING: Will Erase Current Drawing">Change</button>
+                <br>
+                <canvas id="mainCanvas" width="16" height="16" style="width:512px;height:512px"></canvas>
+                <br>
+                <label for="colors">Color:</label>
+                <input type="color" id="colors"> 
+            </div>
+        <div id="conversion">            
             <div>
                 <p>Ctrl+Click to select multiple</p>
                 <select multiple id="soundfont_picker" style="min-height: 300px;">
@@ -57,16 +60,20 @@
                     <source id="source" src="" type="audio/ogg">
                 </audio>
             </div>
+        </div> 
         </div>
     </div>
 </div>
 <script id="pageScript">
     window.addEventListener("load", () =>{
+        const canvasX = document.getElementById("dimensionX");
+        const canvasY = document.getElementById("dimensionY");
+        const dimButton = document.getElementById("changeDim");
         const canvas = document.querySelector('#mainCanvas');
         const colorSelect = document.querySelector('#colors');
         const convert = document.querySelector('#convert');
-
-        canvasPixels = [];
+        const canvasDim = canvas.getBoundingClientRect();
+        let canvasPixels = [];
         for (let i = 0; i < canvas.height; i++){
             //populating the array
             row = [];
@@ -93,10 +100,9 @@
                 b: parseInt(result[3], 16)
             } : null;
         }
-
-
         function startPosition(e){
             // enables painting when the mouse is pressed while the cursor is over the canvas
+            changeColor();
             painting = true;
             draw(e);
         }
@@ -112,17 +118,20 @@
         function draw(e){
             //draws a "pixel" on the canvas wherever the mouse is when it is pressed down
             if(!painting) return;
-            let scale = 16;
-            let x = Math.round(e.clientX/scale)-1;
-            let y = Math.round(e.clientY/scale)-1;
+            
 
+            let scaleX = canvasDim.width/canvas.width;
+            let scaleY = canvasDim.height/canvas.width;
+            let canvasX = e.clientX - canvasDim.left;
+            let canvasY = e.clientY - canvasDim.top;
+            let x = Math.ceil((canvasX)/scaleX)-1;
+            let y = Math.ceil((canvasY)/scaleY)-1;
             canvasctx.fillStyle = currentColor;
             colorRGB = hexToRgb(canvasctx.fillStyle);
             canvasPixels[y][x] = [colorRGB.r, colorRGB.g, colorRGB.b];
             canvasctx.rect(x,y, 1, 1);
             canvasctx.fill();
         }
-
         function convertTXT(){
             //converts the picture to a string and sends it to the server where it is converted into an mp3 file
             //and sent back to the page to be displayed in a playable format
@@ -175,13 +184,32 @@
             document.getElementById("convert").innerHTML = 'Converting';
             
         }
-
+        function changeCanvasSize(){
+            if (confirm("Are you sure?\nThis will erase the current canvas.")){
+                canvas.width = canvasX.value;
+                canvas.height = canvasY.value;
+                canvasPixels = [];
+                for (let i = 0; i < canvas.height; i++){
+                    //populating the array
+                    row = [];
+                    for (let j = 0; j <canvas.width; j++){
+                        pixel = [255,255,255];
+                        row.push(pixel);
+                        }
+                    canvasPixels.push(row);
+                    }
+                canvasctx.clearRect(0,0,canvasDim.width,canvasDim.height);
+            }
+        }
 
         convert.addEventListener("click", convertTXT);
         colorSelect.addEventListener("change", changeColor);
         canvas.addEventListener("mousedown", startPosition);
         canvas.addEventListener("mouseup", endPosition);
         canvas.addEventListener("mousemove", draw);
+        canvas.addEventListener("mouseout", endPosition);
+        dimButton.addEventListener("click", changeCanvasSize);
+
 
         //TESTING 
 
@@ -250,6 +278,9 @@
         image-rendering: -webkit-crisp-edges;
         image-rendering: pixelated;
         cursor: crosshair;
+}
+#canvasStuff{
+    float: left;
 }
 </style>
 </body>
