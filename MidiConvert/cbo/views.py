@@ -111,26 +111,26 @@ def runTestingSuite(request):
 		'fail':[]
 	}
 	# Test 1
-	if midi_to_audio_conversion.createWav(settings.BASE_DIR/'cbo/filein.mid', settings.BASE_DIR/'cbo/soundfonts/Early Ens.sf2', 'melody_loud.wav', 20) == 0:
+	if midi_to_audio_conversion.createWav(settings.BASE_DIR/'cbo/filein.mid', settings.BASE_DIR/'cbo/soundfonts/Ensemble - Early Baroque.sf2', 'melody_loud.wav', 20) == 0:
 		test_results['pass'].append("Test 1: decibel conversion output - positive value pass")
 	else:
 		test_results['fail'].append("Test 1: Error decibel conversion output - not turning up volume")
 
 	# Test 2
-	if midi_to_audio_conversion.createWav(settings.BASE_DIR/'cbo/filein.mid', settings.BASE_DIR/'cbo/soundfonts/Early Ens.sf2', 'melody_quiet.wav', -20) == 0:
+	if midi_to_audio_conversion.createWav(settings.BASE_DIR/'cbo/filein.mid', settings.BASE_DIR/'cbo/soundfonts/Ensemble - Early Baroque.sf2', 'melody_quiet.wav', -20) == 0:
 		test_results['pass'].append("Test 2: decibel conversion output - negative value pass")
 	else:
 		test_results['fail'].append("Test 2: Error decibel conversion output - not turning down volume")
 
 	# Test 3
-	if midi_to_audio_conversion.createWav(settings.BASE_DIR/'cbo/filein.mid', settings.BASE_DIR/'cbo/soundfonts/Early Ens.sf2', 'melody_normal.wav') == 0:
+	if midi_to_audio_conversion.createWav(settings.BASE_DIR/'cbo/filein.mid', settings.BASE_DIR/'cbo/soundfonts/Ensemble - Early Baroque.sf2', 'melody_normal.wav') == 0:
 		test_results['pass'].append("Test 3: basic conversion - no decibel alteration pass")
 	else:
 		test_results['fail'].append("Test 3: Error in basic conversion - no decibel alteration")
 
 	# TEST SECTION 2: OVERLAYWAV
-	sound_list = [settings.BASE_DIR/'cbo/soundfonts/Early Ens.sf2', settings.BASE_DIR/'cbo/soundfonts/Piano.sf2',
-				  settings.BASE_DIR/'cbo/soundfonts/Sax Section.sf2', settings.BASE_DIR/'cbo/soundfonts/Celesta.sf2']
+	sound_list = [settings.BASE_DIR/'cbo/soundfonts/Ensemble - Early Baroque.sf2', settings.BASE_DIR/'cbo/soundfonts/Piano - Grand.sf2',
+				  settings.BASE_DIR/'cbo/soundfonts/Brass - Trumpet.sf2', settings.BASE_DIR/'cbo/soundfonts/Percussion - Celesta.sf2']
 
 	# Test 4
 	if midi_to_audio_conversion.overlayWavs(sound_list, settings.BASE_DIR/'cbo/filein.mid', 'combo_normal.wav') == 0:
