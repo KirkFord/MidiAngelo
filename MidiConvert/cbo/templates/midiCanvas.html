@@ -31,7 +31,7 @@
                 <input type="number" id="dimensionX" value="16" min="2"max="128">
                 <label for="dimensionY"> X </label>
                 <input type="number" id="dimensionY" value="16" min="2"max="128">
-                <button type="button" id="changeDim" title="WARNING: Will Erase Current Drawing">Change</button>
+                <button type="button" class="btn-dark"id="changeDim" title="WARNING: Will Erase Current Drawing">Change</button>
                 <br>
                 <canvas id="mainCanvas" width="16" height="16" style="width:512px;height:512px"></canvas>
                 <br>
@@ -121,7 +121,7 @@
             
 
             let scaleX = canvasDim.width/canvas.width;
-            let scaleY = canvasDim.height/canvas.width;
+            let scaleY = canvasDim.height/canvas.height;
             let canvasX = e.clientX - canvasDim.left;
             let canvasY = e.clientY - canvasDim.top;
             let x = Math.ceil((canvasX)/scaleX)-1;
@@ -185,7 +185,13 @@
             
         }
         function changeCanvasSize(){
-            if (confirm("Are you sure?\nThis will erase the current canvas.")){
+            if (canvasX.value > 128 || canvasY.value > 128){
+                alert("Please set a value below 128x128");
+            }
+            else if (canvasX.value < 2 || canvasY.value < 2){
+                alert("Please set a value of at least 2x2");
+            }
+            else if (confirm("Are you sure?\nThis will erase the current canvas.")){
                 canvas.width = canvasX.value;
                 canvas.height = canvasY.value;
                 canvasPixels = [];
