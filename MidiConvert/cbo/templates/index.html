@@ -3,11 +3,12 @@
   <head>
   {% load static %} <!-- Prepare django to load static files -->
   <link rel="icon" href={% static "minilogo_transparent.png" %}>
-  <title>MIDIANGELO WEBSITE FRONT</title>
+  <title>.midiAngelo - Home</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <!-- CSS -->
   <link rel="stylesheet" href={% static "css/style.css" %} type="text/css" media="screen" />
-  <link rel="stylesheet" href={% static "css/yellow.css" %} type="text/css" media="screen" />
+  <link rel="stylesheet" href={% static "css/blue.css" %} type="text/css" media="screen" />
+  <link rel="stylesheet" href={% static "css/center.css" %} type="text/css" media="screen" />
   <!--[if IE 6]>
   <link rel="stylesheet" type="text/css" media="screen" href="css/ie-hacks.css" />
   <script type="text/javascript" src="js/DD_belatedPNG.js"></script>
@@ -63,22 +64,9 @@
       <!-- navigation -->
       <ul id="nav" class="sf-menu">
         <li class="current_page_item"><a href="/home">HOME</a></li>
-        <li><a href="about.html">FEATURES</a>
-          <ul>
-            <li><a href="about.html">LAYOUT</a></li>
-            <li><a href="about-styled.html">STYLED</a></li>
-            <li><a href="about-more.html">MORE</a></li>
-          </ul>
-        </li>
-        <li><a href="gallery.html">GALLERY</a>
-          <ul>
-            <li><a href="gallery-2.html">TWO COLUMNS</a></li>
-            <li><a href="gallery.html">THREE COLUMNS</a></li>
-            <li><a href="gallery-4.html">FOUR COLUMNS</a></li>
-          </ul>
-        </li>
-        <li ><a href="Login page/Login.html">LOGIN</a></li>
-        <li><a href="contact.html">CONTACT</a></li>
+        <li><a href="/about">FEATURES</a></li>
+        <li ><a href="/login">LOGIN</a></li>
+        <li><a href="/contact">CONTACT</a></li>
       </ul>
       <!-- ENDS navigation -->
     </div>

@@ -29,5 +29,7 @@ urlpatterns = [
     path('testsuite/', views.test),
     path('runTests/', views.runTestingSuite),
     path('validateUser/', views.validateUser),
-    path('createUser/', views.createUser)
+    path('createUser/', views.createUser),
+    path('about/', views.about),
+    path('contact/', views.contact)
 ]

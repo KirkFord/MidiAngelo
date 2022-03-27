@@ -269,5 +269,11 @@ def hash_password(password):
 def check_password(hashed_password, user_password):
     password, salt = hashed_password.split(':')
     return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
- 
-	
+
+#Render the about page
+def about(request):
+	return render(request, 'about.html')
+
+#Render the contact page
+def contact(request):
+	return render(request, 'contact.html')	
