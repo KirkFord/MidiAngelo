@@ -2,9 +2,6 @@ import os
 import re
 from midi2audio import FluidSynth
 from pydub import AudioSegment
-
-from numpy import number
-
 """
 createWav takes:
 a string name representing the soundbank being used for the conversion.
