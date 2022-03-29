@@ -16,7 +16,11 @@ How to use our current build as of March 28 2022
 All the directorys fo the site
 
 home -          index.html
+
 test suite -    test.html
+
 login page -    login.html
+
 sighnup page -  login.html
+
 canvas -        midiCanvas.html
