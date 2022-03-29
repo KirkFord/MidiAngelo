@@ -10,7 +10,7 @@ How to use our current build as of March 28 2022
 
 3.  in a terminal go into the midiconvert directory in the repository and enter the command "docker compose up"
 
-4.  go to Docker, select midiconvert and select "OPEN IN BROWSER", this will load up the login screen on your default browser and you are good to go
+4.  go to Docker, select midiconvert-backend and select "OPEN IN BROWSER", this will load up the login screen on your default browser and you are good to go
 
 
 All the directorys fo the site
