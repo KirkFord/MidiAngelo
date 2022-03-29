@@ -157,17 +157,21 @@ def runTestingSuite(request):
 
 	# Testing reliability of data string unpacker
 	numOfTests = 100
+	failed = 0
 	for testNum in range(1, numOfTests + 1):
 		result = checkDataStringValidity(generateRandomDatastring())
-		if result == True:
-			test_results['pass'].append(
-				"Random Datastring Generation " + str(testNum) + "/" + str(numOfTests) + " passed")
-		else:
+		if result != True:
+			# test_results['pass'].append(
+			# 	"Random Datastring Generation " + str(testNum) + "/" + str(numOfTests) + " passed")
 			test_results['fail'].append(
 				"Random Datastring Generation " + str(testNum) + "/" + str(numOfTests) + " Reason:" + result)
+			failed+=1
+	test_results['pass'].append(
+		"Random Datastring Generation " + str(testNum-failed) + "/" + str(numOfTests) + " passed")
 
 	# Testing Random generation of Images from randomly generated
 	numofRandTests = 100
+	failed = 0
 	show = False
 	for testNum in range(1, numofRandTests + 1):
 		try:
@@ -177,8 +181,9 @@ def runTestingSuite(request):
 		except RuntimeError:
 			test_results['fail'].append(
 				"Random Image Generation " + str(testNum) + "/" + str(numofRandTests) + " had a RuntimeError")
+			failed += 1
 			raise
-		test_results['pass'].append("Random Image Generation " + str(testNum) + "/" + str(numofRandTests) + " passed")
+	test_results['pass'].append("Random Image Generation " + str(testNum-failed) + "/" + str(numofRandTests) + " passed")
 
 	
 
